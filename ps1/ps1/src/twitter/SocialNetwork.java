@@ -3,13 +3,11 @@
  */
 package twitter;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * SocialNetwork provides methods that operate on a social network.
- * 
+ *
  * A social network is represented by a Map<String, Set<String>> where map[A] is
  * the set of people that person A follows on Twitter, and all people are
  * represented by their Twitter usernames. Users can't follow themselves. If A
@@ -18,7 +16,7 @@ import java.util.Set;
  * Twitter usernames are not case sensitive, so "ernie" is the same as "ERNie".
  * A username should appear at most once as a key in the map or in any given
  * map[A] set.
- * 
+ *
  * DO NOT change the method signatures and specifications of these methods, but
  * you should implement their method bodies, and you may add new public or
  * private methods or classes if you like.
@@ -27,7 +25,7 @@ public class SocialNetwork {
 
     /**
      * Guess who might follow whom, from evidence found in tweets.
-     * 
+     *
      * @param tweets
      *            a list of tweets providing the evidence, not modified by this
      *            method.
@@ -41,20 +39,37 @@ public class SocialNetwork {
      *         either authors or @-mentions in the list of tweets.
      */
     public static Map<String, Set<String>> guessFollowsGraph(List<Tweet> tweets) {
-        throw new RuntimeException("not implemented");
+        Map<String, Set<String>> graph = new HashMap<>();
+
+        for (Tweet tweet : tweets) {
+            String author = tweet.getAuthor().toLowerCase();
+            Set<String> mentions = Extract.getMentionedUsers(List.of(tweet));
+
+            // 避免 self-loop
+            mentions.remove(author);
+
+            graph.putIfAbsent(author, new HashSet<>());
+            graph.get(author).addAll(mentions);
+        }
+
+        return graph;
     }
 
     /**
      * Find the people in a social network who have the greatest influence, in
      * the sense that they have the most followers.
-     * 
+     *
      * @param followsGraph
      *            a social network (as defined above)
      * @return a list of all distinct Twitter usernames in followsGraph, in
      *         descending order of follower count.
      */
     public static List<String> influencers(Map<String, Set<String>> followsGraph) {
-        throw new RuntimeException("not implemented");
+        List<String>usersSortedByInfluencesInDescendingOrder=new ArrayList<>();
+        for(String user:followsGraph.keySet()){
+
+        }
+
     }
 
 }
